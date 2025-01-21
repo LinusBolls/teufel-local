@@ -2,11 +2,13 @@ import json
 import uasyncio as asyncio
 import os
 
-from microdot.microdot import Microdot, send_file, Response
-from microdot.websocket import with_websocket
+from src.microdot.microdot import Microdot, send_file, Response
+from src.microdot.websocket import with_websocket
 
-from speaker_controls import speaker_controls
-from html import get_index_html
+from src.env import Env
+from src.wifi import connect_wifi, set_mdns_hostname
+from src.speaker_controls import speaker_controls
+from src.html import get_index_html
 
 ws_clients = set()
 
@@ -41,8 +43,11 @@ async def websocket_handler(request, ws):
         ws_clients.remove(ws)
 
 async def start_webserver():
-    port = int(os.getenv('PORT', 80)) # get the port from the environment, default to 80
+    port = 80
     await app.start_server(debug=True, host='0.0.0.0', port=port)
 
-if __name__ == '__main__':
-    asyncio.run(start_webserver())
+if Env.has_wifi_credentials:
+    connect_wifi(Env.wifi_ssid, Env.wifi_password)
+    set_mdns_hostname("balls")
+
+asyncio.run(start_webserver())
