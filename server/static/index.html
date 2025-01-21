@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128' fill='none'%3E%3Crect x='5.5' y='5.5' width='117' height='117' rx='58.5' stroke='%23A51C35' fill='%23000' stroke-width='11'/%3E%3Cpath d='M73.0071 44.055H80.5644H93.9481L95.5176 30.0758H55.1105C43.7564 30.0758 39.3403 30.91 34.7071 34.0533C30.2931 37.016 27.668 42.0663 27.668 47.5165C27.668 52.0487 29.0203 55.9467 31.9615 59.9242H47.951C44.1735 55.8284 41.8666 51.6316 41.8666 48.7893C41.8666 45.4267 44.0531 44.055 49.8409 44.055H58.4903L55.4481 70.9816C53.8764 84.4234 51.7694 87.586 44.2917 87.586C42.3271 87.586 41.7997 87.4895 37.9135 86.7783L37.7687 86.7518L36.1992 100.611C39.4607 101.565 42.303 101.982 45.8827 101.982C53.1218 101.982 59.0063 99.6776 62.9043 95.4615C66.7033 91.2647 68.1546 87.0485 69.2102 77.4832L73.0071 44.055Z' fill='%23A51C35'/%3E%3C/svg%3E"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>teufel.local - Remote control for your Teufel Speaker</title>
+    <meta
+      name="description"
+      content="Control your Teufel Speaker from your browser"
+    />
+    <meta
+      name="keywords"
+      content="teufel, teufel rockster, box, speaker, remote, control, browser, web, app, audio, sound, volume"
+    />
+    <meta name="theme-color" content="#000" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100%;
+        padding-top: 3rem;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #000;
+      }
+      .slider {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 100%;
+        height: 6px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        border-radius: 99rem;
+        -webkit-transition: 0.2s;
+        transition: opacity 0.2s;
+      }
+
+      .slider:hover {
+        opacity: 1;
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 1rem;
+        height: 1rem;
+        background: #fff;
+        cursor: pointer;
+        border-radius: 99rem;
+      }
+
+      .slider::-moz-range-thumb {
+        width: 1rem;
+        height: 1rem;
+        background: #fff;
+        cursor: pointer;
+        border-radius: 99rem;
+      }
+      .logo {
+        width: 8rem;
+        height: 8rem;
+
+        margin-bottom: 5rem;
+      }
+      .controls {
+        display: flex;
+        flex-direction: column;
+
+        width: 100%;
+        max-width: 32rem;
+        padding: 0 1rem;
+
+        gap: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      data-reconnecting-indicator
+      style="
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        display: none;
+        background: #a51c35;
+        font-size: 1.5rem;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 4rem;
+        height: 4rem;
+        border-radius: 0.25rem;
+      "
+    >
+      <svg
+        width="25"
+        height="25"
+        viewBox="0 0 25 25"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M20.6684 22.8192L18.0184 20.2192H7.36841C5.83507 20.2192 4.53507 19.6858 3.46841 18.6192C2.40174 17.5525 1.86841 16.2525 1.86841 14.7192C1.86841 13.4392 2.26507 12.2992 3.05841 11.2992C3.85174 10.2925 4.87174 9.64916 6.11841 9.36916C6.17174 9.23583 6.22174 9.10583 6.26841 8.97917C6.33507 8.8525 6.38508 8.71583 6.41841 8.56917L2.26841 4.41916L3.66841 3.01917L22.0684 21.4192M7.36841 18.2192H16.0184L7.96841 10.1692C7.93507 10.3558 7.91174 10.5392 7.89841 10.7192C7.87841 10.8725 7.86841 11.0392 7.86841 11.2192H7.36841C6.40174 11.2192 5.57841 11.5625 4.89841 12.2492C4.21174 12.9292 3.86841 13.7525 3.86841 14.7192C3.86841 15.6858 4.21174 16.5192 4.89841 17.2192C5.57841 17.8858 6.40174 18.2192 7.36841 18.2192ZM22.4684 18.9692L21.0184 17.5692C21.3051 17.3358 21.5184 17.0658 21.6584 16.7592C21.7984 16.4525 21.8684 16.1058 21.8684 15.7192C21.8684 15.0192 21.6251 14.4292 21.1384 13.9492C20.6584 13.4625 20.0684 13.2192 19.3684 13.2192H17.8684V11.2192C17.8684 9.83916 17.3817 8.65916 16.4084 7.67916C15.4351 6.70583 14.2551 6.21917 12.8684 6.21917C12.4217 6.21917 11.9884 6.2725 11.5684 6.37916C11.1484 6.4925 10.7484 6.66583 10.3684 6.89916L8.91841 5.44917C9.50508 5.04917 10.1251 4.7425 10.7784 4.52917C11.4384 4.3225 12.1351 4.21917 12.8684 4.21917C14.8217 4.21917 16.4751 4.89917 17.8284 6.25917C19.1884 7.6125 19.8684 9.26583 19.8684 11.2192C21.0217 11.3525 21.9751 11.8525 22.7284 12.7192C23.4884 13.5725 23.8684 14.5725 23.8684 15.7192C23.8684 16.3858 23.7451 16.9892 23.4984 17.5292C23.2451 18.0892 22.9017 18.5692 22.4684 18.9692Z"
+          fill="white"
+        />
+      </svg>
+    </div>
+    <svg
+      width="128"
+      height="128"
+      viewBox="0 0 128 128"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      class="logo"
+    >
+      <rect
+        x="5.5"
+        y="5.5"
+        width="117"
+        height="117"
+        rx="58.5"
+        stroke="#A51C35"
+        stroke-width="11"
+      />
+      <path
+        d="M73.0071 44.055H80.5644H93.9481L95.5176 30.0758H55.1105C43.7564 30.0758 39.3403 30.91 34.7071 34.0533C30.2931 37.016 27.668 42.0663 27.668 47.5165C27.668 52.0487 29.0203 55.9467 31.9615 59.9242H47.951C44.1735 55.8284 41.8666 51.6316 41.8666 48.7893C41.8666 45.4267 44.0531 44.055 49.8409 44.055H58.4903L55.4481 70.9816C53.8764 84.4234 51.7694 87.586 44.2917 87.586C42.3271 87.586 41.7997 87.4895 37.9135 86.7783L37.7687 86.7518L36.1992 100.611C39.4607 101.565 42.303 101.982 45.8827 101.982C53.1218 101.982 59.0063 99.6776 62.9043 95.4615C66.7033 91.2647 68.1546 87.0485 69.2102 77.4832L73.0071 44.055Z"
+        fill="#A51C35"
+      />
+    </svg>
+
+    <div class="controls">
+      <input
+        type="range"
+        min="1"
+        max="100"
+        value="50"
+        class="slider"
+        data-input="channel-1:volume"
+        aria-label="Channel 1 Volume"
+      />
+      <input
+        type="range"
+        min="1"
+        max="100"
+        value="50"
+        class="slider"
+        data-input="channel-2:volume"
+        aria-label="Channel 2 Volume"
+      />
+    </div>
+    <script defer>
+      (() => {
+        const RECONNECTING_INDICATOR = document.querySelector(
+          "[data-reconnecting-indicator]"
+        );
+
+        function setWsState(state) {
+          switch (state) {
+            case "open":
+              RECONNECTING_INDICATOR.style.display = "none";
+              break;
+            case "reconnecting":
+              RECONNECTING_INDICATOR.style.display = "flex";
+              break;
+            case "error":
+              RECONNECTING_INDICATOR.style.display = "flex";
+              break;
+            default:
+              console.error("Unknown WebSocket state:", state);
+          }
+        }
+
+        // this gets injected server-side when the page is served
+        const INITIAL_DATA = null;
+
+        const websocketUrl = "/ws";
+
+        console.info("websocket url:", websocketUrl);
+
+        let ws;
+
+        function connectWebSocket() {
+          ws = new WebSocket(websocketUrl);
+
+          ws.onopen = () => {
+            setWsState("open");
+          };
+
+          ws.onmessage = (event) => {
+            let data;
+            try {
+              data = JSON.parse(event.data);
+            } catch (err) {
+              console.error(
+                "Failed to parse incoming message as JSON:",
+                event.data
+              );
+              return;
+            }
+
+            if (
+              !data.input ||
+              Object.values(data.input).some(
+                (i) => typeof i !== "number" || i < 0 || i > 100
+              )
+            ) {
+              console.error(
+                "Failed to parse incoming message with unexpected format:",
+                data
+              );
+              return;
+            }
+            console.info("received:", JSON.stringify(data));
+
+            for (const [inputId, value] of Object.entries(data.input)) {
+              const inputElement = document.querySelector(
+                `[data-input="${inputId}"]`
+              );
+              if (!inputElement) {
+                console.error(
+                  `Failed to set value "${value}" for input element [data-input="${inputId}"] because it couldn't be found`
+                );
+                return;
+              }
+              inputElement.value = value;
+            }
+          };
+
+          ws.onclose = () => {
+            setWsState("reconnecting");
+          };
+
+          ws.onerror = (err) => {
+            setWsState("reconnecting");
+          };
+        }
+
+        document.querySelectorAll("[data-input]").forEach((input) => {
+          const inputId = input.getAttribute("data-input");
+          const initialValue = INITIAL_DATA?.input?.[inputId];
+
+          if (
+            typeof initialValue !== "number" ||
+            initialValue < 0 ||
+            initialValue > 100
+          ) {
+            console.error(
+              `Failed to set initial value "${initialValue}" for input element [data-input="${inputId}"] because it's not a number between 0 and 100`
+            );
+            return;
+          }
+          input.value = initialValue;
+
+          input.addEventListener("input", (event) => {
+            const value = parseInt(event.target.value);
+            const data = { input: { [inputId]: value } };
+
+            console.info("sent:", JSON.stringify(data));
+
+            if (ws && ws.readyState === WebSocket.OPEN) {
+              ws.send(JSON.stringify(data));
+            }
+          });
+        });
+
+        connectWebSocket();
+
+        setInterval(() => {
+          if (
+            !ws ||
+            ws.readyState === WebSocket.CLOSED ||
+            ws.readyState === WebSocket.CONNECTING
+          ) {
+            connectWebSocket();
+          }
+        }, 500);
+      })();
+    </script>
+  </body>
+</html>
